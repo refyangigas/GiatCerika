@@ -14,7 +14,6 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    // Navigate to welcome screen after 3 seconds
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
@@ -25,6 +24,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       body: Center(
@@ -32,32 +33,37 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Kids learning animation
-            Lottie.asset(
-              'assets/animations/kids-learning.json',
-              width: 200,
-              height: 200,
+            SizedBox(
+              height: size.height * 0.4,
+              child: Lottie.asset(
+                'assets/animations/kids-learning1.json',
+                fit: BoxFit.contain,
+              ),
             ),
-            const SizedBox(height: 24),
-            // App name and loading animation in a Row
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Giat Cerika',
-                  style: TextStyle(
-                    color: AppColors.primaryColor,
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
+            SizedBox(height: size.height * 0.05),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Column(
+                children: [
+                  Text(
+                    'Giat Cerika',
+                    style: TextStyle(
+                      color: AppColors.primaryColor,
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                const SizedBox(width: 8),
-                // Loading animation
-                Lottie.asset(
-                  'assets/animations/loading.json',
-                  width: 40,
-                  height: 40,
-                ),
-              ],
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: CircularProgressIndicator(
+                      color: AppColors.primaryColor,
+                      strokeWidth: 4,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

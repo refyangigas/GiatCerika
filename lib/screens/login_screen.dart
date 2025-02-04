@@ -42,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               children: [
                 Lottie.asset(
-                  'assets/animations/kids-learning.json',
+                  'assets/animations/login-learning1.json',
                   height: 200,
                 ),
                 const SizedBox(height: 32),
@@ -59,13 +59,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: _emailController,
                   decoration: InputDecoration(
                     labelText: 'Email',
-                    prefixIcon: const Icon(Icons.email, color: AppColors.primaryColor),
+                    prefixIcon:
+                        const Icon(Icons.email, color: AppColors.primaryColor),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: AppColors.primaryColor),
+                      borderSide:
+                          const BorderSide(color: AppColors.primaryColor),
                     ),
                   ),
                   validator: (value) {
@@ -81,10 +83,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   obscureText: !_isPasswordVisible,
                   decoration: InputDecoration(
                     labelText: 'Password',
-                    prefixIcon: const Icon(Icons.lock, color: AppColors.primaryColor),
+                    prefixIcon:
+                        const Icon(Icons.lock, color: AppColors.primaryColor),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                        _isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                         color: AppColors.primaryColor,
                       ),
                       onPressed: () {
@@ -98,7 +103,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: AppColors.primaryColor),
+                      borderSide:
+                          const BorderSide(color: AppColors.primaryColor),
                     ),
                   ),
                   validator: (value) {
@@ -121,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     alignment: Alignment.center,
                     children: [
                       Lottie.asset(
-                        'assets/animations/button.json',
+                        'assets/animations/buttons.json',
                         height: 80,
                       ),
                       const Text(

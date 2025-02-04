@@ -44,7 +44,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Column(
               children: [
                 Lottie.asset(
-                  'assets/animations/kids-learning.json',
+                  'assets/animations/kids-learning1.json',
                   height: 200,
                 ),
                 const SizedBox(height: 32),
@@ -61,13 +61,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   controller: _nameController,
                   decoration: InputDecoration(
                     labelText: 'Nama Lengkap',
-                    prefixIcon: const Icon(Icons.person, color: AppColors.primaryColor),
+                    prefixIcon:
+                        const Icon(Icons.person, color: AppColors.primaryColor),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: AppColors.primaryColor),
+                      borderSide:
+                          const BorderSide(color: AppColors.primaryColor),
                     ),
                   ),
                   validator: (value) {
@@ -82,13 +84,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   controller: _emailController,
                   decoration: InputDecoration(
                     labelText: 'Email',
-                    prefixIcon: const Icon(Icons.email, color: AppColors.primaryColor),
+                    prefixIcon:
+                        const Icon(Icons.email, color: AppColors.primaryColor),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: AppColors.primaryColor),
+                      borderSide:
+                          const BorderSide(color: AppColors.primaryColor),
                     ),
                   ),
                   validator: (value) {
@@ -104,10 +108,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   obscureText: !_isPasswordVisible,
                   decoration: InputDecoration(
                     labelText: 'Password',
-                    prefixIcon: const Icon(Icons.lock, color: AppColors.primaryColor),
+                    prefixIcon:
+                        const Icon(Icons.lock, color: AppColors.primaryColor),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                        _isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                         color: AppColors.primaryColor,
                       ),
                       onPressed: () {
@@ -121,7 +128,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: AppColors.primaryColor),
+                      borderSide:
+                          const BorderSide(color: AppColors.primaryColor),
                     ),
                   ),
                   validator: (value) {
@@ -145,7 +153,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     alignment: Alignment.center,
                     children: [
                       Lottie.asset(
-                        'assets/animations/button.json',
+                        'assets/animations/buttons.json',
                         height: 80,
                       ),
                       const Text(
