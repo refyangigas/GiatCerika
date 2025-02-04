@@ -27,45 +27,67 @@ class _SplashScreenState extends State<SplashScreen> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Kids learning animation
-            SizedBox(
-              height: size.height * 0.4,
-              child: Lottie.asset(
-                'assets/animations/kids-learning1.json',
-                fit: BoxFit.contain,
+      body: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              AppColors.primaryColor.withOpacity(0.1),
+              AppColors.backgroundColor,
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Spacer(),
+              // Lottie Animation
+              SizedBox(
+                height: size.height * 0.5,
+                child: Lottie.asset(
+                  'assets/animations/splash.json',
+                  fit: BoxFit.contain,
+                ),
               ),
-            ),
-            SizedBox(height: size.height * 0.05),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: Column(
-                children: [
-                  Text(
-                    'Giat Cerika',
-                    style: TextStyle(
-                      color: AppColors.primaryColor,
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  SizedBox(
-                    height: 50,
-                    width: 50,
-                    child: CircularProgressIndicator(
-                      color: AppColors.primaryColor,
-                      strokeWidth: 4,
-                    ),
-                  ),
-                ],
+              const SizedBox(height: 35),
+              // Title and Subtitle
+              Text(
+                'Giat Cerika',
+                style: TextStyle(
+                  color: AppColors.primaryColor,
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-          ],
+              const SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                child: Text(
+                  'Belajar Menyenangkan,\nPrestasi Membanggakan!',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: AppColors.textSecondaryColor,
+                    fontSize: 16,
+                    height: 1.5,
+                  ),
+                ),
+              ),
+              const Spacer(),
+              // Loading Indicator
+              SizedBox(
+                height: 50,
+                width: 50,
+                child: CircularProgressIndicator(
+                  color: AppColors.primaryColor,
+                  strokeWidth: 4,
+                ),
+              ),
+              const SizedBox(height: 32),
+            ],
+          ),
         ),
       ),
     );
