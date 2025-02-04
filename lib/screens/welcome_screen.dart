@@ -44,11 +44,11 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Belajar Sambil Bermain, Pintar Jadi Lebih Menyenangkan!',
+                    'Teruslah belajar dan berkembang!',
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 16,
                       color: AppColors.textSecondaryColor,
-                      height: 1.5,
+                      height: 1.7,
                     ),
                   ),
                   // Lottie Animation
