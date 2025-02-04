@@ -77,7 +77,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     FadeInUp(
                       duration: const Duration(milliseconds: 1500),
                       child: Lottie.asset(
-                        'assets/animations/women-learning.json',
+                        'assets/animations/women.json',
                         height: 200,
                       ),
                     ),
