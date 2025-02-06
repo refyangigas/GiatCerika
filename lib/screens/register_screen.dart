@@ -13,16 +13,72 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
-  final _emailController = TextEditingController();
+  final _fullNameController = TextEditingController();
+  final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
   bool _isPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false;
+
+  // Username validation pattern
+  final RegExp _usernamePattern = RegExp(r'^[A-Za-z0-9._-]{4,15}$');
+
+  String? _validateFullName(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Mohon masukkan nama lengkap';
+    }
+    if (value.trim() == _usernameController.text.trim()) {
+      return 'Nama lengkap tidak boleh sama dengan username';
+    }
+    return null;
+  }
+
+  String? _validateUsername(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Mohon masukkan username';
+    }
+    if (value.length < 4) {
+      return 'Username minimal 4 karakter';
+    }
+    if (value.length > 15) {
+      return 'Username maksimal 15 karakter';
+    }
+    if (!_usernamePattern.hasMatch(value)) {
+      return 'Username hanya boleh mengandung huruf, angka, dan karakter . _ -';
+    }
+    if (value.contains(' ')) {
+      return 'Username tidak boleh mengandung spasi';
+    }
+    if (value.trim() == _fullNameController.text.trim()) {
+      return 'Username tidak boleh sama dengan nama lengkap';
+    }
+    // TODO: Add check for username uniqueness from backend
+    return null;
+  }
+
+  String? _validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Mohon masukkan password';
+    }
+    return null;
+  }
+
+  String? _validateConfirmPassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Mohon konfirmasi password';
+    }
+    if (value != _passwordController.text) {
+      return 'Password tidak cocok';
+    }
+    return null;
+  }
 
   @override
   void dispose() {
-    _nameController.dispose();
-    _emailController.dispose();
+    _fullNameController.dispose();
+    _usernameController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -106,6 +162,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     const SizedBox(height: 32),
+                    // Full Name Field
                     FadeInUp(
                       duration: const Duration(milliseconds: 1500),
                       child: Container(
@@ -122,7 +179,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ],
                         ),
                         child: TextFormField(
-                          controller: _nameController,
+                          controller: _fullNameController,
                           decoration: InputDecoration(
                             labelText: 'Nama Lengkap',
                             prefixIcon: const Icon(Icons.person,
@@ -134,16 +191,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             filled: true,
                             fillColor: Colors.white,
                           ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Mohon masukkan nama lengkap';
-                            }
-                            return null;
+                          validator: _validateFullName,
+                          onChanged: (value) {
+                            // Trigger form validation when fullname changes
+                            _formKey.currentState?.validate();
                           },
                         ),
                       ),
                     ),
                     const SizedBox(height: 16),
+                    // Username Field
                     FadeInUp(
                       duration: const Duration(milliseconds: 1500),
                       child: Container(
@@ -160,10 +217,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ],
                         ),
                         child: TextFormField(
-                          controller: _emailController,
+                          controller: _usernameController,
                           decoration: InputDecoration(
-                            labelText: 'Email',
-                            prefixIcon: const Icon(Icons.email,
+                            labelText: 'Username',
+                            prefixIcon: const Icon(Icons.account_circle,
                                 color: AppColors.primaryColor),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -171,17 +228,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                             filled: true,
                             fillColor: Colors.white,
+                            helperText: '4-15 karakter (A-Z, 0-9, . _ -)',
                           ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Mohon masukkan email';
-                            }
-                            return null;
+                          validator: _validateUsername,
+                          onChanged: (value) {
+                            // Trigger form validation when username changes
+                            _formKey.currentState?.validate();
                           },
                         ),
                       ),
                     ),
                     const SizedBox(height: 16),
+                    // Password Field
                     FadeInUp(
                       duration: const Duration(milliseconds: 1500),
                       child: Container(
@@ -224,24 +282,73 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             filled: true,
                             fillColor: Colors.white,
                           ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Mohon masukkan password';
-                            }
-                            return null;
+                          validator: _validatePassword,
+                          onChanged: (value) {
+                            // Trigger confirm password validation when password changes
+                            _formKey.currentState?.validate();
                           },
                         ),
                       ),
                     ),
+                    const SizedBox(height: 16),
+                    // Confirm Password Field
+                    FadeInUp(
+                      duration: const Duration(milliseconds: 1500),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.1),
+                              spreadRadius: 1,
+                              blurRadius: 10,
+                              offset: const Offset(0, 1),
+                            ),
+                          ],
+                        ),
+                        child: TextFormField(
+                          controller: _confirmPasswordController,
+                          obscureText: !_isConfirmPasswordVisible,
+                          decoration: InputDecoration(
+                            labelText: 'Konfirmasi Password',
+                            prefixIcon: const Icon(Icons.lock_outline,
+                                color: AppColors.primaryColor),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _isConfirmPasswordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: AppColors.primaryColor,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _isConfirmPasswordVisible =
+                                      !_isConfirmPasswordVisible;
+                                });
+                              },
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide.none,
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                          validator: _validateConfirmPassword,
+                        ),
+                      ),
+                    ),
                     const SizedBox(height: 32),
+                    // Register Button
                     FadeInUp(
                       duration: const Duration(milliseconds: 1500),
                       child: InkWell(
                         onTap: () {
                           if (_formKey.currentState!.validate()) {
                             // TODO: Implement register logic
-                            print('Name: ${_nameController.text}');
-                            print('Email: ${_emailController.text}');
+                            print('Full Name: ${_fullNameController.text}');
+                            print('Username: ${_usernameController.text}');
                             print('Password: ${_passwordController.text}');
                           }
                         },
@@ -265,6 +372,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     const SizedBox(height: 16),
+                    // Login Link
                     FadeInUp(
                       duration: const Duration(milliseconds: 1500),
                       child: Row(

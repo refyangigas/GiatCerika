@@ -13,13 +13,35 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
+  final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
 
+  // Username validation pattern
+  final RegExp _usernamePattern = RegExp(r'^[A-Za-z0-9._-]{4,15}$');
+
+  String? _validateUsername(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Mohon masukkan username';
+    }
+    if (value.length < 4) {
+      return 'Username minimal 4 karakter';
+    }
+    if (value.length > 15) {
+      return 'Username maksimal 15 karakter';
+    }
+    if (!_usernamePattern.hasMatch(value)) {
+      return 'Username hanya boleh mengandung huruf, angka, dan karakter . _ -';
+    }
+    if (value.contains(' ')) {
+      return 'Username tidak boleh mengandung spasi';
+    }
+    return null;
+  }
+
   @override
   void dispose() {
-    _emailController.dispose();
+    _usernameController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -120,10 +142,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           ],
                         ),
                         child: TextFormField(
-                          controller: _emailController,
+                          controller: _usernameController,
                           decoration: InputDecoration(
-                            labelText: 'Email',
-                            prefixIcon: const Icon(Icons.email,
+                            labelText: 'Username',
+                            prefixIcon: const Icon(Icons.person,
                                 color: AppColors.primaryColor),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -132,12 +154,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             filled: true,
                             fillColor: Colors.white,
                           ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Mohon masukkan email';
-                            }
-                            return null;
-                          },
+                          validator: _validateUsername,
                         ),
                       ),
                     ),
@@ -199,8 +216,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: InkWell(
                         onTap: () {
                           if (_formKey.currentState!.validate()) {
-                            // TODO: Implement login logic
-                            print('Email: ${_emailController.text}');
+                            // TODO: Implement login logic with username instead of email
+                            print('Username: ${_usernameController.text}');
                             print('Password: ${_passwordController.text}');
                           }
                         },
@@ -231,16 +248,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: [
                           const Text(
                             'Belum punya akun? ',
-                            style:
-                                TextStyle(color: AppColors.textSecondaryColor),
+                            style: TextStyle(color: AppColors.textSecondaryColor),
                           ),
                           GestureDetector(
                             onTap: () {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        const RegisterScreen()),
+                                    builder: (context) => const RegisterScreen()),
                               );
                             },
                             child: const Text(
