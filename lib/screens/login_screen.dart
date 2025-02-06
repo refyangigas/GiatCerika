@@ -3,6 +3,9 @@ import 'package:giat_cerika/screens/register_screen.dart';
 import 'package:lottie/lottie.dart';
 import 'package:giat_cerika/constant/color.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:giat_cerika/services/auth_services.dart';
+import 'package:giat_cerika/providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -15,7 +18,9 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  final AuthService _authService = AuthService();
   bool _isPasswordVisible = false;
+  bool _isLoading = false;
 
   // Username validation pattern
   final RegExp _usernamePattern = RegExp(r'^[A-Za-z0-9._-]{4,15}$');
@@ -44,6 +49,39 @@ class _LoginScreenState extends State<LoginScreen> {
     _usernameController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  void _showSnackBar(String message, bool isError) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: isError ? Colors.red : Colors.green,
+      ),
+    );
+  }
+
+    Future<void> _handleLogin() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() => _isLoading = true);
+      try {
+        final response = await _authService.login(
+          _usernameController.text,
+          _passwordController.text,
+        );
+
+        if (!mounted) return;
+
+        if (response.containsKey('token')) {
+          await context.read<AuthProvider>().setToken(response['token']);
+          _showSnackBar('Login berhasil', false);
+          Navigator.pushReplacementNamed(context, '/home');
+        } else {
+          _showSnackBar(response['message'] ?? 'Login gagal', true);
+        }
+      } finally {
+        if (mounted) setState(() => _isLoading = false);
+      }
+    }
   }
 
   @override
@@ -228,7 +266,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               'assets/animations/buttons.json',
                               height: 80,
                             ),
-                            const Text(
+                            _isLoading 
+        ? const CircularProgressIndicator(color: Colors.white)
+                            :const Text(
                               'Masuk',
                               style: TextStyle(
                                 fontSize: 18,
