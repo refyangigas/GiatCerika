@@ -13,69 +13,22 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
-  final List<Widget> _screens = [
-  const HomeScreen(), 
-  const ProfileScreen(),
-];
+  late final List<Widget> _screens;
+
+  @override
+  void initState() {
+    super.initState();
+    _screens = [
+      HomeContent(),
+      const ProfileScreen(),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Selamat Datang!',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimaryColor,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Pilih menu yang tersedia',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: AppColors.textSecondaryColor,
-                ),
-              ),
-              const SizedBox(height: 30),
-              Expanded(
-                child: GridView.count(
-                  crossAxisCount: 1,
-                  childAspectRatio: 2.5,
-                  mainAxisSpacing: 20,
-                  children: [
-                    _buildFeatureCard(
-                      'Materi',
-                      'assets/images/airballon_color.png',
-                      AppColors.accentColor1,
-                      () => print('Materi tapped'),
-                    ),
-                    _buildFeatureCard(
-                      'Video Pembelajaran',
-                      'assets/images/airballon.png',
-                      AppColors.accentColor2,
-                      () => print('Video tapped'),
-                    ),
-                    _buildFeatureCard(
-                      'Tes',
-                      'assets/images/destination.png',
-                      AppColors.accentColor3,
-                      () => print('Tes tapped'),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      body: _screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         selectedItemColor: AppColors.primaryColor,
@@ -91,6 +44,68 @@ class _HomeScreenState extends State<HomeScreen> {
             label: 'Profile',
           ),
         ],
+      ),
+    );
+  }
+}
+
+class HomeContent extends StatelessWidget {
+  const HomeContent({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Selamat Datang!',
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textPrimaryColor,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Pilih menu yang tersedia',
+              style: TextStyle(
+                fontSize: 16,
+                color: AppColors.textSecondaryColor,
+              ),
+            ),
+            const SizedBox(height: 30),
+            Expanded(
+              child: GridView.count(
+                crossAxisCount: 1,
+                childAspectRatio: 2.5,
+                mainAxisSpacing: 20,
+                children: [
+                  _buildFeatureCard(
+                    'Materi',
+                    'assets/images/travel-bag.png',
+                    AppColors.accentColor4,
+                    () => print('Materi tapped'),
+                  ),
+                  _buildFeatureCard(
+                    'Video Pembelajaran',
+                    'assets/images/airballon.png',
+                    AppColors.accentColor2,
+                    () => print('Video tapped'),
+                  ),
+                  _buildFeatureCard(
+                    'Tes',
+                    'assets/images/destination.png',
+                    AppColors.accentColor3,
+                    () => print('Tes tapped'),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

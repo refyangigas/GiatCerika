@@ -9,6 +9,7 @@ class AppColors {
   static const Color accentColor1 = Color(0xFFE9C46A);
   static const Color accentColor2 = Color(0xFFF4A261);
   static const Color accentColor3 = Color(0xFFF9C74F);
+  static const Color accentColor4 = Color(0xFF1A2373);
 
   // Additional Colors
   static const Color backgroundColor = Colors.white;

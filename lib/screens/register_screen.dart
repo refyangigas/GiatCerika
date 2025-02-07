@@ -111,7 +111,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
         if (response.containsKey('token')) {
           await context.read<AuthProvider>().setToken(response['token']);
           _showSnackBar('Registrasi berhasil', false);
-          Navigator.pushReplacementNamed(context, '/home');
+          if (!mounted) return;
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginScreen()),
+          );
         } else {
           _showSnackBar(response['message'] ?? 'Registrasi gagal', true);
         }
@@ -383,14 +387,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     FadeInUp(
                       duration: const Duration(milliseconds: 1500),
                       child: InkWell(
-                        onTap: () {
-                          if (_formKey.currentState!.validate()) {
-                            // TODO: Implement register logic
-                            print('Full Name: ${_fullNameController.text}');
-                            print('Username: ${_usernameController.text}');
-                            print('Password: ${_passwordController.text}');
-                          }
-                        },
+                        onTap: _handleRegister,
                         child: Stack(
                           alignment: Alignment.center,
                           children: [

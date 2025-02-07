@@ -60,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-    Future<void> _handleLogin() async {
+  Future<void> _handleLogin() async {
     if (_formKey.currentState!.validate()) {
       setState(() => _isLoading = true);
       try {
@@ -252,13 +252,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     FadeInUp(
                       duration: const Duration(milliseconds: 1500),
                       child: InkWell(
-                        onTap: () {
-                          if (_formKey.currentState!.validate()) {
-                            // TODO: Implement login logic with username instead of email
-                            print('Username: ${_usernameController.text}');
-                            print('Password: ${_passwordController.text}');
-                          }
-                        },
+                        onTap:
+                            _handleLogin, // Ubah ini untuk memanggil fungsi _handleLogin
                         child: Stack(
                           alignment: Alignment.center,
                           children: [
@@ -266,16 +261,17 @@ class _LoginScreenState extends State<LoginScreen> {
                               'assets/animations/buttons.json',
                               height: 80,
                             ),
-                            _isLoading 
-        ? const CircularProgressIndicator(color: Colors.white)
-                            :const Text(
-                              'Masuk',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
+                            _isLoading
+                                ? const CircularProgressIndicator(
+                                    color: Colors.white)
+                                : const Text(
+                                    'Masuk',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                           ],
                         ),
                       ),
@@ -288,14 +284,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: [
                           const Text(
                             'Belum punya akun? ',
-                            style: TextStyle(color: AppColors.textSecondaryColor),
+                            style:
+                                TextStyle(color: AppColors.textSecondaryColor),
                           ),
                           GestureDetector(
                             onTap: () {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const RegisterScreen()),
+                                    builder: (context) =>
+                                        const RegisterScreen()),
                               );
                             },
                             child: const Text(
