@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:giat_cerika/constant/color.dart';
 import 'package:giat_cerika/screens/profile_screen.dart';
+import 'package:giat_cerika/screens/materi_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -87,7 +88,12 @@ class HomeContent extends StatelessWidget {
                     'Materi',
                     'assets/images/travel-bag.png',
                     AppColors.accentColor4,
-                    () => print('Materi tapped'),
+                    () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MateriScreen(),
+                      ),
+                    ),
                   ),
                   _buildFeatureCard(
                     'Video Pembelajaran',

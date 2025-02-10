@@ -1,16 +1,15 @@
-// lib/services/auth_service.dart
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class AuthService {
-  static const String baseUrl = 'http://192.168.1.5:5000/api';
+  static const String baseUrl = 'http://192.168.1.2:5000/api';
 
   Future<Map<String, dynamic>> register(
       String fullName, String username, String password) async {
     try {
       print('Sending register request to: $baseUrl/auth/register');
       print('Request body: ${jsonEncode({
-            'fullName': fullName,
+            'fullname': fullName,
             'username': username,
             'password': password,
           })}');
