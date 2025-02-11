@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:giat_cerika/constant/color.dart';
 import 'package:giat_cerika/models/materi.dart';
@@ -20,17 +21,20 @@ class MateriDetailScreen extends StatelessWidget {
             expandedHeight: 250,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
-              background: Image.network(
-                materi.thumbnail,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    color: Colors.grey[300],
-                    child: Icon(Icons.error),
-                  );
-                },
+                background: CachedNetworkImage(
+              imageUrl: materi.thumbnail,
+              height: 180,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              placeholder: (context, url) => Container(
+                color: Colors.grey[300],
+                child: const Center(child: CircularProgressIndicator()),
               ),
-            ),
+              errorWidget: (context, url, error) => Container(
+                color: Colors.grey[300],
+                child: const Icon(Icons.error),
+              ),
+            )),
           ),
           SliverToBoxAdapter(
             child: Padding(
