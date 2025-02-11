@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:giat_cerika/constant/color.dart';
 import 'package:giat_cerika/screens/profile_screen.dart';
 import 'package:giat_cerika/screens/materi_screen.dart';
+import 'package:giat_cerika/screens/video_screen.dart';
+import 'quiz_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -95,17 +97,27 @@ class HomeContent extends StatelessWidget {
                       ),
                     ),
                   ),
-                  _buildFeatureCard(
+                   _buildFeatureCard(
                     'Video Pembelajaran',
                     'assets/images/airballon.png',
                     AppColors.accentColor2,
-                    () => print('Video tapped'),
+                    () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const VideoScreen(),
+                      ),
+                    ),
                   ),
                   _buildFeatureCard(
                     'Tes',
                     'assets/images/destination.png',
                     AppColors.accentColor3,
-                    () => print('Tes tapped'),
+                    () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const QuizScreen(),
+                      ),
+                    ),
                   ),
                 ],
               ),
