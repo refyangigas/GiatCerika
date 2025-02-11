@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:giat_cerika/screens/quiz_play_screen.dart';
 import '../constant/color.dart';
 import '../models/quiz.dart';
 
@@ -153,8 +154,12 @@ class QuizDetailScreen extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  // TODO: Implementasi navigasi ke QuizPlayScreen
-                  print('Mulai mengerjakan quiz: ${quiz.title}');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => QuizPlayScreen(quiz: quiz),
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.accentColor3,

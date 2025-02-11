@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:giat_cerika/utils/jwt_helper.dart';
 
 class AuthProvider extends ChangeNotifier {
   String? _token;
+  String? _userId;
   DateTime? _lastLoginTime;
+
+  String? get userId => _userId;
+  String? get token => _token;
 
   bool get isLoggedIn {
     if (_token == null || _lastLoginTime == null) return false;
@@ -19,6 +24,7 @@ class AuthProvider extends ChangeNotifier {
 
   Future<void> setToken(String token) async {
     _token = token;
+    _userId = JwtHelper.getUserIdFromToken(token);
     _lastLoginTime = DateTime.now();
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('token', token);
@@ -28,6 +34,7 @@ class AuthProvider extends ChangeNotifier {
 
   Future<void> logout() async {
     _token = null;
+    _userId = null;
     _lastLoginTime = null;
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('token');
@@ -38,6 +45,9 @@ class AuthProvider extends ChangeNotifier {
   Future<void> checkLoginStatus() async {
     final prefs = await SharedPreferences.getInstance();
     _token = prefs.getString('token');
+    if (_token != null) {
+      _userId = JwtHelper.getUserIdFromToken(_token!);
+    }
     final lastLoginStr = prefs.getString('lastLoginTime');
     if (lastLoginStr != null) {
       _lastLoginTime = DateTime.parse(lastLoginStr);
