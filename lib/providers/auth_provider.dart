@@ -1,57 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:giat_cerika/utils/jwt_helper.dart';
 
 class AuthProvider extends ChangeNotifier {
+  final _storage = const FlutterSecureStorage();
   String? _token;
   String? _userId;
-  DateTime? _lastLoginTime;
 
   String? get userId => _userId;
   String? get token => _token;
 
-  bool get isLoggedIn {
-    if (_token == null || _lastLoginTime == null) return false;
-
-    // Check if 5 minutes have passed
-    final difference = DateTime.now().difference(_lastLoginTime!);
-    if (difference.inMinutes >= 5) {
-      logout(); // Auto logout
-      return false;
-    }
-    return true;
-  }
+  bool get isLoggedIn => _token != null;
 
   Future<void> setToken(String token) async {
-    _token = token;
-    _userId = JwtHelper.getUserIdFromToken(token);
-    _lastLoginTime = DateTime.now();
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('token', token);
-    await prefs.setString('lastLoginTime', _lastLoginTime!.toIso8601String());
-    notifyListeners();
+    try {
+      _token = token;
+      _userId = JwtHelper.getUserIdFromToken(token);
+      await _storage.write(key: 'token', value: token);
+      notifyListeners();
+    } catch (e) {
+      print('Error setting token: $e');
+      throw Exception('Failed to save token');
+    }
   }
 
   Future<void> logout() async {
-    _token = null;
-    _userId = null;
-    _lastLoginTime = null;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('token');
-    await prefs.remove('lastLoginTime');
-    notifyListeners();
+    try {
+      _token = null;
+      _userId = null;
+      await _storage.delete(key: 'token');
+      notifyListeners();
+    } catch (e) {
+      print('Error during logout: $e');
+      throw Exception('Failed to logout');
+    }
   }
 
   Future<void> checkLoginStatus() async {
-    final prefs = await SharedPreferences.getInstance();
-    _token = prefs.getString('token');
-    if (_token != null) {
-      _userId = JwtHelper.getUserIdFromToken(_token!);
+    try {
+      _token = await _storage.read(key: 'token');
+      if (_token != null) {
+        _userId = JwtHelper.getUserIdFromToken(_token!);
+      }
+      notifyListeners();
+    } catch (e) {
+      print('Error checking login status: $e');
+      await logout(); // Clear any potentially corrupted state
     }
-    final lastLoginStr = prefs.getString('lastLoginTime');
-    if (lastLoginStr != null) {
-      _lastLoginTime = DateTime.parse(lastLoginStr);
-    }
-    notifyListeners();
   }
 }

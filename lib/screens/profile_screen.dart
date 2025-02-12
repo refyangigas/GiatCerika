@@ -27,8 +27,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _loadData() async {
     setState(() => _isLoading = true);
     try {
+      print('Loading profile data...');
       final profile = await _profileService.getProfile();
+      print('Profile data received: $profile');
+
+      print('Loading attempts data...');
       final attempts = await _profileService.getLatestAttempts();
+      print('Attempts data received: $attempts');
 
       setState(() {
         _profileData = profile;
@@ -36,6 +41,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _isLoading = false;
       });
     } catch (e) {
+      print('Error in _loadData: $e');
       setState(() => _isLoading = false);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -48,57 +54,60 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const Center(child: CircularProgressIndicator());
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
     }
 
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      body: Column(
-        children: [
-          const _TopPortion(),
-          Expanded(
-            flex: 3,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Text(
-                    _profileData?['fullName'] ?? 'User',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineSmall
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      FloatingActionButton.extended(
-                        onPressed: () => _showEditProfileDialog(),
-                        heroTag: 'edit',
-                        elevation: 0,
-                        backgroundColor: AppColors.accentColor3,
-                        label: const Text("Edit Profil"),
-                        icon: const Icon(Icons.edit),
-                      ),
-                      const SizedBox(width: 16.0),
-                      FloatingActionButton.extended(
-                        onPressed: () => _handleLogout(context),
-                        heroTag: 'logout',
-                        elevation: 0,
-                        backgroundColor: Colors.red,
-                        label: const Text("Logout"),
-                        icon: const Icon(Icons.logout),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-                  _buildLatestAttempts(),
-                ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const _TopPortion(),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Text(
+                      _profileData?['fullName'] ?? 'User',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineSmall
+                          ?.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        FloatingActionButton.extended(
+                          onPressed: () => _showEditProfileDialog(),
+                          heroTag: 'edit',
+                          elevation: 0,
+                          backgroundColor: AppColors.accentColor3,
+                          label: const Text("Edit Profil"),
+                          icon: const Icon(Icons.edit),
+                        ),
+                        const SizedBox(width: 16.0),
+                        FloatingActionButton.extended(
+                          onPressed: () => _handleLogout(context),
+                          heroTag: 'logout',
+                          elevation: 0,
+                          backgroundColor: Colors.red,
+                          label: const Text("Logout"),
+                          icon: const Icon(Icons.logout),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    if (_latestAttempts.isNotEmpty) _buildLatestAttempts(),
+                  ],
+                ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -252,56 +261,59 @@ class _TopPortion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        Container(
-          margin: const EdgeInsets.only(bottom: 50),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
-              colors: [
-                AppColors.accentColor3,
-                AppColors.accentColor3.withOpacity(0.8),
-              ],
-            ),
-            borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(50),
-              bottomRight: Radius.circular(50),
-            ),
-          ),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: SizedBox(
-            width: 150,
-            height: 150,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: AppColors.backgroundColor,
-                      width: 3,
-                    ),
-                  ),
-                  child: const Center(
-                    child: Icon(
-                      Icons.person,
-                      size: 70,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
+    return Container(
+      height: 200, // Tetapkan tinggi spesifik
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          Container(
+            margin: const EdgeInsets.only(bottom: 50),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+                colors: [
+                  AppColors.accentColor3,
+                  AppColors.accentColor3.withOpacity(0.8),
+                ],
+              ),
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(50),
+                bottomRight: Radius.circular(50),
+              ),
             ),
           ),
-        ),
-      ],
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              width: 150,
+              height: 150,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: AppColors.backgroundColor,
+                        width: 3,
+                      ),
+                    ),
+                    child: const Center(
+                      child: Icon(
+                        Icons.person,
+                        size: 70,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
