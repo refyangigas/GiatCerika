@@ -94,7 +94,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           onPressed: () => _handleLogout(context),
                           heroTag: 'logout',
                           elevation: 0,
-                          backgroundColor: Colors.red,
+                          backgroundColor: AppColors.accentColor3,
                           label: const Text("Logout"),
                           icon: const Icon(Icons.logout),
                         ),
@@ -293,7 +293,7 @@ class _TopPortion extends StatelessWidget {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.black,
+                      color: AppColors.accentColor3,
                       shape: BoxShape.circle,
                       border: Border.all(
                         color: AppColors.backgroundColor,
