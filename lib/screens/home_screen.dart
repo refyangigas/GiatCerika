@@ -71,7 +71,7 @@ class HomeContent extends StatelessWidget {
                 color: AppColors.textPrimaryColor,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 10),
             Text(
               'Pilih menu yang tersedia',
               style: TextStyle(
@@ -79,7 +79,7 @@ class HomeContent extends StatelessWidget {
                 color: AppColors.textSecondaryColor,
               ),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 50),
             Expanded(
               child: GridView.count(
                 crossAxisCount: 1,
@@ -97,7 +97,7 @@ class HomeContent extends StatelessWidget {
                       ),
                     ),
                   ),
-                   _buildFeatureCard(
+                  _buildFeatureCard(
                     'Video Pembelajaran',
                     'assets/images/airballon.png',
                     AppColors.accentColor2,

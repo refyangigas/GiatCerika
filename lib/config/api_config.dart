@@ -1,6 +1,6 @@
 class ApiConfig {
   // Base URL untuk server
-  static const String baseUrl = 'http://192.168.96.51:5000';
+  static const String baseUrl = 'http://192.168.1.7:5000';
   
   // URL untuk API endpoints
   static const String apiUrl = '$baseUrl/api';

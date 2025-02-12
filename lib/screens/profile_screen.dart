@@ -246,7 +246,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               );
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
+              backgroundColor: AppColors.accentColor2,
             ),
             child: const Text('Logout'),
           ),
