@@ -34,6 +34,14 @@ class _QuizScreenState extends State<QuizScreen> {
   }
 
   Future<void> _onRefresh() async {
+    setState(() {
+      _currentPage = 1;
+      _quizzes.clear();
+      _hasMoreData = true;
+      _totalPages = 1;
+      _searchQuery = '';
+      _searchController.clear(); // Reset search field
+    });
     await _loadQuizzes(refresh: true);
   }
 

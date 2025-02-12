@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:giat_cerika/config/api_config.dart';
 import 'package:provider/provider.dart';
 import '../constant/color.dart';
 import '../models/quiz.dart';
@@ -42,6 +43,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> {
   }
 
   void _finishQuiz() {
+    // Kembali ke home screen
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
@@ -68,8 +70,8 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> {
         }
 
         return {
-          'question': question.text,
-          'selectedOption': selectedOption.text,
+          'question': question.id, // Gunakan ID
+          'selectedOption': selectedOption.id, // Gunakan ID
           'isCorrect': selectedOption.isCorrect,
         };
       }).toList();
@@ -283,7 +285,8 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
                                 child: CachedNetworkImage(
-                                  imageUrl: _currentQuestion.image!.url,
+                                  imageUrl: ApiConfig.getImageUrl(
+                                      _currentQuestion.image!.url),
                                   placeholder: (context, url) => Container(
                                     height: 200,
                                     color: Colors.grey[300],

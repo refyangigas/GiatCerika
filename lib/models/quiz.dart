@@ -19,16 +19,19 @@ class QuizImage {
 }
 
 class QuizOption {
+  final String id;
   final String text;
   final bool isCorrect;
 
   QuizOption({
+    required this.id,
     required this.text,
     required this.isCorrect,
   });
 
   factory QuizOption.fromJson(Map<String, dynamic> json) {
     return QuizOption(
+      id: json['_id'] ?? '',
       text: json['text'] ?? '',
       isCorrect: json['isCorrect'] ?? false,
     );
@@ -36,12 +39,14 @@ class QuizOption {
 }
 
 class QuizQuestion {
+  final String id;
   final String text;
   final QuizImage? image;
   final List<QuizOption> options;
   final String type; // 'boolean' or 'multiple'
 
   QuizQuestion({
+    required this.id,
     required this.text,
     this.image,
     required this.options,
@@ -50,6 +55,7 @@ class QuizQuestion {
 
   factory QuizQuestion.fromJson(Map<String, dynamic> json) {
     return QuizQuestion(
+      id: json['_id'] ?? '',
       text: json['text'] ?? '',
       image: json['image'] != null ? QuizImage.fromJson(json['image']) : null,
       options: (json['options'] as List? ?? [])

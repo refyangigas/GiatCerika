@@ -46,8 +46,8 @@ class QuizResultScreen extends StatelessWidget {
                   const SizedBox(height: 20),
                   Lottie.asset(
                     score >= 60
-                        ? 'assets/animations/success.json'
-                        : 'assets/animations/try-again.json',
+                        ? 'assets/animations/success1.json'
+                        : 'assets/animations/fail1.json',
                     height: 200,
                   ),
                   const SizedBox(height: 32),
@@ -141,7 +141,11 @@ class QuizResultScreen extends StatelessWidget {
                       const SizedBox(width: 16),
                       Expanded(
                         child: ElevatedButton.icon(
-                          onPressed: onFinish,
+                          onPressed: () {
+                            // Navigasi ke home screen dengan mengganti semua route sebelumnya
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                                '/home', (route) => false);
+                          },
                           icon: const Icon(Icons.check_circle),
                           label: const Text('Selesai'),
                           style: ElevatedButton.styleFrom(
