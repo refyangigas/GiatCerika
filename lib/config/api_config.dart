@@ -1,6 +1,6 @@
 class ApiConfig {
   // Base URL untuk server
-  static const String baseUrl = 'http://192.168.1.7:5000';
+  static const String baseUrl = 'http://192.168.1.8:5000';
   
   // URL untuk API endpoints
   static const String apiUrl = '$baseUrl/api';
@@ -11,7 +11,12 @@ class ApiConfig {
       return ''; // Return empty string for null/empty paths
     }
     
-    // Normalisasi path gambar
+    // Jika URL sudah lengkap (dari Cloudinary), gunakan langsung
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+      return path;
+    }
+    
+    // Untuk backward compatibility, jika masih menggunakan path lokal
     String normalizedPath = path;
     if (!path.startsWith('/uploads/') && !path.startsWith('uploads/')) {
       normalizedPath = path.startsWith('/')
