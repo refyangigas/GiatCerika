@@ -113,6 +113,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildLatestAttempts() {
+    if (_latestAttempts.isEmpty) {
+      return const Center(
+        child: Text(
+          'Belum ada quiz yang diselesaikan',
+          style: TextStyle(
+            fontSize: 16,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
+      );
+    }
+
     return Container(
       height: 80,
       constraints: const BoxConstraints(maxWidth: 400),
@@ -136,11 +148,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                       Text(
-                        DateFormat('dd/MM').format(
-                          DateTime.parse(attempt['date']),
-                        ),
+                        attempt['date'] != null
+                            ? DateFormat('dd/MM').format(
+                                DateTime.parse(attempt['date']),
+                              )
+                            : '-',
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
+                      if (attempt['quizTitle'] == 'Quiz telah dihapus')
+                        Text(
+                          '(Dihapus)',
+                          style:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    fontStyle: FontStyle.italic,
+                                    color: Colors.grey,
+                                  ),
+                        ),
                     ],
                   ),
                 ),
