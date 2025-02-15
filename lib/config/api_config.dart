@@ -1,6 +1,6 @@
 class ApiConfig {
   // Base URL untuk server
-  static const String baseUrl = 'https://giat-cerika-backend.vercel.app';
+  static const String baseUrl = 'https://giat-cerika-backend.vercel.app/api';
   
   // URL untuk API endpoints
   static const String apiUrl = '$baseUrl/api';

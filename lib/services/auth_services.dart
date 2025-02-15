@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class AuthService {
-  static const String baseUrl = 'https://giat-cerika-backend.vercel.app';
+  static const String baseUrl = 'https://giat-cerika-backend.vercel.app/api';
 
   Future<Map<String, dynamic>> register(
       String fullName, String username, String password) async {
