@@ -85,18 +85,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           onPressed: () => _showEditProfileDialog(),
                           heroTag: 'edit',
                           elevation: 0,
-                          backgroundColor: AppColors.accentColor3,
-                          label: const Text("Edit Profil"),
-                          icon: const Icon(Icons.edit),
+                          backgroundColor: AppColors.textSecondaryColor,
+                          label: const Text(
+                            "Edit Profil",
+                            style: TextStyle(
+                              color:
+                                  Colors.white, // Menambahkan warna teks putih
+                            ),
+                          ),
+                          icon: const Icon(Icons.edit, color: Colors.white),
                         ),
                         const SizedBox(width: 16.0),
                         FloatingActionButton.extended(
                           onPressed: () => _handleLogout(context),
                           heroTag: 'logout',
                           elevation: 0,
-                          backgroundColor: AppColors.accentColor3,
-                          label: const Text("Logout"),
-                          icon: const Icon(Icons.logout),
+                          backgroundColor: AppColors.secondaryColor,
+                          label: const Text(
+                            "Logout",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                          icon: const Icon(Icons.logout, color: Colors.white),
                         ),
                       ],
                     ),
@@ -326,7 +337,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               }
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.accentColor3,
+              backgroundColor: AppColors.textSecondaryColor,
             ),
             child: const Text('Simpan'),
           ),
@@ -356,7 +367,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               );
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.accentColor2,
+              backgroundColor: AppColors.secondaryColor,
             ),
             child: const Text('Logout'),
           ),
@@ -383,8 +394,8 @@ class _TopPortion extends StatelessWidget {
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
                 colors: [
-                  AppColors.accentColor3,
-                  AppColors.accentColor3.withOpacity(0.8),
+                  AppColors.secondaryColor,
+                  AppColors.textSecondaryColor.withOpacity(0.8),
                 ],
               ),
               borderRadius: const BorderRadius.only(
@@ -403,7 +414,7 @@ class _TopPortion extends StatelessWidget {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: AppColors.accentColor3,
+                      color: AppColors.secondaryColor,
                       shape: BoxShape.circle,
                       border: Border.all(
                         color: AppColors.backgroundColor,
