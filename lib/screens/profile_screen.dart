@@ -125,54 +125,141 @@ class _ProfileScreenState extends State<ProfileScreen> {
       );
     }
 
-    return Container(
-      height: 80,
-      constraints: const BoxConstraints(maxWidth: 400),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: _latestAttempts.asMap().entries.map((entry) {
-          final attempt = entry.value;
-          return Expanded(
-            child: Row(
-              children: [
-                if (entry.key != 0) const VerticalDivider(),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '${attempt['score']}',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                      ),
-                      Text(
-                        attempt['date'] != null
-                            ? DateFormat('dd/MM').format(
-                                DateTime.parse(attempt['date']),
-                              )
-                            : '-',
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                      if (attempt['quizTitle'] == 'Quiz telah dihapus')
-                        Text(
-                          '(Dihapus)',
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    fontStyle: FontStyle.italic,
-                                    color: Colors.grey,
-                                  ),
-                        ),
-                    ],
-                  ),
-                ),
-              ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text(
+            'Hasil Quiz Terakhir',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: AppColors.textPrimaryColor,
             ),
-          );
-        }).toList(),
-      ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: _latestAttempts.length,
+          itemBuilder: (context, index) {
+            final attempt = _latestAttempts[index];
+            return Card(
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryColor.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Center(
+                        child: Text(
+                          '${attempt['score']}',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primaryColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (attempt['quizTitle'] == 'Quiz telah dihapus')
+                            const Text(
+                              'Quiz telah dihapus',
+                              style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                                color: Colors.grey,
+                              ),
+                            )
+                          else
+                            Text(
+                              attempt['quizTitle'] ?? 'Quiz',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          const SizedBox(height: 4),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.calendar_today,
+                                size: 14,
+                                color: AppColors.textSecondaryColor,
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                attempt['date'] != null
+                                    ? DateFormat('dd MMMM yyyy').format(
+                                        DateTime.parse(attempt['date']),
+                                      )
+                                    : '-',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: AppColors.textSecondaryColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color:
+                            _getScoreColor(attempt['score']).withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        _getScoreStatus(attempt['score']),
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: _getScoreColor(attempt['score']),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ],
     );
+  }
+
+  Color _getScoreColor(int score) {
+    if (score >= 80) return Colors.green;
+    if (score >= 60) return AppColors.primaryColor;
+    return AppColors.accentColor2;
+  }
+
+  String _getScoreStatus(int score) {
+    if (score >= 80) return 'Sangat Baik';
+    if (score >= 60) return 'Baik';
+    return 'Perlu Diulang';
   }
 
   Future<void> _showEditProfileDialog() async {
